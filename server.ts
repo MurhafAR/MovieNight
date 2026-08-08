@@ -4,8 +4,8 @@ import next from "next";
 import { Server } from "socket.io";
 import { parse } from "url";
 import { getToken } from "next-auth/jwt";
-import { deleteRoom, insertMessage, getRoomMessages, setRoomEmptiedAt, clearRoomEmptiedAt, getEmptyRoomsOlderThan, setRoomVideo, updateRoomVideoState, verifyRoomHost, updateRoomPermissions, getRoomById, getUser } from "@/app/backend/database";
-import { generateAiResponse } from "@/app/backend/ai";
+import { deleteRoom, insertMessage, getRoomMessages, setRoomEmptiedAt, clearRoomEmptiedAt, getEmptyRoomsOlderThan, setRoomVideo, updateRoomVideoState, verifyRoomHost, updateRoomPermissions, getRoomById, getUser } from "./src/app/backend/database";
+import { generateAiResponse } from "./src/app/backend/ai";
 
 declare module "socket.io" {
     interface Socket {
