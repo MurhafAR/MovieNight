@@ -1,0 +1,133 @@
+.container {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.joinBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: 1px solid var(--darkerGreen);
+    color: var(--darkerGreen);
+    border-radius: 50%;
+    width: clamp(30px, 4vw, 36px);
+    height: clamp(30px, 4vw, 36px);
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.joinBtn:hover {
+    background: var(--darkerGreen);
+    color: white;
+}
+
+.active {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: rgba(0, 255, 0, 0.08);
+    border-radius: 20px;
+    padding: 2px clamp(4px, 1vw, 8px);
+}
+
+.voiceBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    color: var(--darkerGreen);
+    cursor: pointer;
+    padding: clamp(2px, 0.5vw, 4px);
+    border-radius: 50%;
+    transition: background 0.2s;
+}
+
+.voiceBtn:hover {
+    background: rgba(0, 255, 0, 0.15);
+}
+
+.leaveBtn {
+    color: #ff6b6b;
+}
+
+.leaveBtn:hover {
+    background: rgba(255, 0, 0, 0.15);
+}
+
+.count {
+    font-size: clamp(0.6rem, 1.5vw, 0.8rem);
+    color: var(--darkerGreen);
+    min-width: 16px;
+    text-align: center;
+}
+
+@media (max-width: 600px) {
+    .active {
+        gap: 2px;
+    }
+}
+
+.wrapper {
+    position: relative;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.participantList {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    background: #1a1a2e;
+    border: 1px solid var(--darkerGreen);
+    border-radius: 8px;
+    padding: 6px;
+    min-width: 150px;
+    z-index: 20;
+}
+
+.participantRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 4px 6px;
+    border-radius: 4px;
+}
+
+.participantRow:hover {
+    background: rgba(0, 255, 0, 0.06);
+}
+
+.participantName {
+    font-size: 0.85rem;
+    color: #e0e0e0;
+}
+
+.speakerBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    color: var(--darkerGreen);
+    cursor: pointer;
+    padding: 2px;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+
+.speakerBtn:hover {
+    background: rgba(0, 255, 0, 0.15);
+}
+
+@media (max-width: 768px) {
+    .participantList {
+        left: auto;
+        right: 0;
+        min-width: 130px;
+    }
+}

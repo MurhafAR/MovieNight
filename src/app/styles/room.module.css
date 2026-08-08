@@ -1,0 +1,294 @@
+.roomLayout {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+.roomContainer {
+    display: flex;
+    flex-direction: row;
+    height: 100vh;
+    width: 100%;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
+@media (max-width: 900px) {
+    .roomContainer {
+        flex-direction: column;
+    }
+}
+
+@media (min-width: 901px) {
+    [dir="rtl"] .roomContainer {
+        flex-direction: row-reverse;
+    }
+}
+
+.roomContainer>* {
+    margin: none;
+    gap: 0;
+}
+
+
+.navIcon {
+    width: clamp(20px, 3vw, 30px);
+    cursor: pointer;
+}
+
+@media (max-width: 600px) {
+    .navIcon {
+        width: 20px;
+    }
+}
+
+
+
+.settingsPopup {
+    width: clamp(350px, 75%, 450px);
+    padding: 10px;
+    overflow: hidden;
+}
+
+.settingsSection1 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.settingsSection {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    width: 100%;
+    height: 100%;
+}
+
+.popupHeader {
+    display: flex;
+    flex-direction: column;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 8px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid gray;
+}
+
+.popupHeader>h1,
+.popupHeader>span {
+    width: fit-content;
+}
+
+.popupHeader>h1 {
+    font-size: clamp(1.1rem, 3vw, 1.5rem);
+}
+
+.popupHeader>span {
+    font-size: clamp(0.8rem, 1.8vw, 0.95rem);
+}
+
+.switchRow {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: clamp(8px, 2vw, 15px);
+}
+
+.switchRow .toggleLabel {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    width: 44px;
+    height: 24px;
+}
+
+.toggleInput {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggleSlider {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    border-radius: 24px;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.toggleSlider::before {
+    content: "";
+    position: absolute;
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease-in-out;
+}
+
+.toggleInput:checked+.toggleSlider {
+    background-color: var(--lightBlue);
+}
+
+.toggleInput:checked+.toggleSlider::before {
+    transform: translateX(20px);
+}
+
+.toggleInput:focus-visible+.toggleSlider {
+    outline: 2px solid black;
+    outline-offset: 2px;
+}
+
+.toggleStatus {
+    font-size: 14px;
+    font-weight: 500;
+    color: #353535;
+}
+
+.permissionLabel {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: clamp(6px, 2vw, 15px);
+    width: 75%;
+    font-size: clamp(0.85rem, 1.8vw, 1rem);
+}
+
+@media (max-width: 600px) {
+    .permissionLabel {
+        width: 65%;
+        gap: 6px;
+        font-size: 0.85rem;
+    }
+}
+
+.doneBtn {
+    padding: clamp(6px, 1.5vw, 10px);
+    width: 100%;
+    font-size: clamp(0.95rem, 2vw, 1.1rem);
+}
+
+
+.videoPopup {
+    width: clamp(650px, 75%, 950px);
+    height: 160px;
+    padding: 10px 20px;
+    overflow: hidden;
+}
+
+.videoPopupActions {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.videoActionBtn {
+    cursor: pointer;
+    width: 50%;
+    padding: 4px 12px;
+    margin: 2px;
+    font-size: clamp(0.8rem, 1.5vw, 1rem);
+    box-sizing: border-box;
+    border: none;
+}
+
+@media (max-width: 600px) {
+    .videoActionBtn {
+        width: 100%;
+        font-size: 0.9rem;
+    }
+}
+
+
+.membersSection1 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 12px 0;
+}
+
+.membersPopup {
+    padding: 24px;
+    width: min(450px, 90vw);
+}
+
+@media (max-width: 600px) {
+    .membersPopup {
+        width: 100%;
+        padding: 24px 16px 16px;
+        max-height: 90vh;
+    }
+}
+
+.memberList {
+    padding: 12px 0;
+    width: 100%;
+}
+
+.memberListTitle {
+    font-size: 0.9rem;
+    margin-bottom: 12px;
+    padding: 0 4px;
+    color: var(--darkerBlue);
+}
+
+.memberRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 8px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+}
+
+.memberRow:hover {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.memberName {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.memberActions {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+}
+
+.memberActionBtn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    color: var(--darkerBlue);
+    display: flex;
+    align-items: center;
+}
+
+.memberActionBtn:hover {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.mutedIndicator {
+    color: #e67e22;
+}

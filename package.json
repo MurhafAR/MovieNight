@@ -1,0 +1,45 @@
+{
+  "name": "movienight",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "yarn@4.13.0",
+  "engines": {
+    "node": ">=20.9.0"
+  },
+  "scripts": {
+    "db:start": "sudo docker start movienight-db",
+    "dev": "yarn db:start && tsx server.ts",
+    "db:migrate": "drizzle-kit migrate",
+    "build": "next build",
+    "start": "NODE_ENV=production tsx server.ts",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "dotenv": "^17.4.2",
+    "drizzle-kit": "^0.31.10",
+    "drizzle-orm": "^0.45.2",
+    "lucide-react": "^0.577.0",
+    "next": "16.2.0",
+    "next-auth": "^5.0.0-beta.31",
+    "postgres": "^3.4.9",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "react-player": "^3.4.0",
+    "react-resizable": "^4.0.2",
+    "socket.io": "^4.8.3",
+    "socket.io-client": "^4.8.3",
+    "tsx": "^4.21.0"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^3.0.0",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@types/react-resizable": "^4.0.0",
+    "babel-plugin-react-compiler": "1.0.0",
+    "eslint": "^9",
+    "eslint-config-next": "16.2.0",
+    "typescript": "^5"
+  }
+}

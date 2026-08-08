@@ -1,0 +1,29 @@
+.inputField[type="text"],
+.inputField[type="password"],
+.inputField[type="email"] {
+    width: 100%;
+    height: 40px;
+    outline: none;
+    background-color: var(--elementsBackground);
+    border: 1px solid var(--elementsBorder);
+    border-radius: 2.5px;
+    font-size: 1em;
+    text-indent: 8px;
+}
+
+.inputField[type="text"]:focus,
+.inputField[type="password"]:active,
+.inputField[type="email"]:active {
+    border: 1px solid var(--darkerBlue);
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    width: 99%;
+    height: fit-content;
+}
+
+.form * {
+    margin-bottom: 1px;
+}

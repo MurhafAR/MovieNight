@@ -1,0 +1,112 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    flex: 1;
+}
+
+.videoSelector {
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: stretch;
+    height: clamp(40px, 5vh, 50px);
+    width: clamp(200px, 25%, 400px);
+    color: white;
+}
+
+@media (max-width: 600px) {
+    .videoSelector {
+        width: 90%;
+        max-width: 350px;
+    }
+}
+
+@media (min-width: 601px) and (max-width: 1024px) {
+    .videoSelector {
+        width: 40%;
+    }
+}
+
+.videoSource {
+    display: flex;
+    border: none;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    background-color: var(--lightBlue);
+    width: 80%;
+    border-start-start-radius: 8px;
+    border-end-start-radius: 8px;
+    font-size: clamp(0.7rem, 1.5vw, 1rem);
+}
+
+.videoSource:hover {
+    background-color: var(--darkerBlue);
+}
+
+.videoSource>input {
+    display: none;
+}
+
+.dropdown {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    width: 20%;
+    margin-inline-start: 2px;
+    font-size: clamp(0.6rem, 1.2vw, 0.8rem);
+
+}
+
+.selector {
+    color: transparent;
+    border: none;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    box-sizing: border-box;
+    cursor: pointer;
+    background-color: var(--lightBlue);
+    border-start-end-radius: 8px;
+    border-end-end-radius: 8px;
+    height: 100%;
+    width: 100%;
+}
+
+.selector:hover {
+    background-color: var(--darkerBlue);
+}
+
+.dropdownArrow {
+    position: absolute;
+    box-sizing: border-box;
+    z-index: 1;
+    width: 3%;
+    pointer-events: none;
+}
+
+.pop {
+    width: 35%;
+    min-height: fit-content;
+    height: 150px;
+}
+
+.section2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.popupButton {
+    width: 100%;
+    padding: 6px;
+}
+
+.hostUploadMsg {
+    font-size: 0.9rem;
+    margin-top: 4px;
+}

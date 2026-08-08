@@ -1,0 +1,48 @@
+.card {
+    display: flex;
+    flex-direction: column;
+    padding: 6px;
+    border-radius: 3px;
+    text-wrap: wrap;
+    background-color: var(--secondaryBackground);
+}
+
+.green {
+    border: 0.7px solid var(--lightGreen);
+    box-shadow: 0 0px 3.5px 0px var(--lightGreen);
+}
+
+.blue {
+    border: 0.7px solid var(--lightBlue);
+    box-shadow: 0 0px 3.5px 0px var(--lightBlue);
+}
+
+.card span {
+    color: gray;
+    width: 100%;
+    text-align: center;
+}
+
+.cardTitle {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 80px;
+    padding: 12px 0;
+}
+
+/* Action/content section — pushed to the bottom via margin-top:auto */
+.cardFunction {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    width: 100%;
+    min-height: 120px;
+    padding: 12px 0;
+    margin-top: auto;
+}
+
+@media (max-width: 400px) {}

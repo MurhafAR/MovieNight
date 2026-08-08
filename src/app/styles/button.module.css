@@ -1,0 +1,30 @@
+.button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    border-radius: 2.5px;
+    border: 1px solid var(--elementsBorder);
+    cursor: pointer;
+}
+
+.green {
+    background-color: var(--lightGreen);
+    color: black;
+}
+
+.green:hover {
+    background-color: var(--darkerGreen);
+}
+
+.blue {
+    background-color: var(--elementsBackground);
+    color: gray;
+}
+
+.blue:hover {
+    background-color: var(--darkerBlue);
+    color: black;
+}
+
+.button:hover {}

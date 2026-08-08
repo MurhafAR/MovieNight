@@ -1,0 +1,105 @@
+.container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: black;
+    z-index: 2;
+    flex: 1;
+    width: auto;
+}
+
+.controlsOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    background: linear-gradient(to top, #00ffbf59 0%, transparent 42%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 5;
+}
+
+.container:hover .controlsOverlay {
+    opacity: 1;
+}
+
+
+.bottomBar {
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.seekBar {
+    flex-grow: 1;
+    cursor: pointer;
+    accent-color: var(--darkerGreen);
+}
+
+.icon {
+    cursor: pointer;
+    stroke: var(--darkerGreen);
+    width: 30px;
+    height: 25px;
+    padding: 3px;
+}
+
+.icon:hover {
+    background-color: rgba(245, 222, 179, 0.205);
+    border-radius: 6px;
+}
+
+.volumeBar {
+    width: clamp(40px, 8%, 100px);
+    cursor: pointer;
+    accent-color: var(--darkerGreen);
+}
+
+.seekBarDisabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+@media (max-width: 600px) {
+    .bottomBar {
+        padding: 8px;
+        gap: 6px;
+        flex-wrap: wrap;
+    }
+
+    .icon {
+        width: 22px;
+        height: 18px;
+    }
+
+    .volumeBar {
+        width: 50px;
+    }
+
+    .seekBar {
+        min-width: 100%;
+        order: -1;
+    }
+}
+
+@media (min-width: 601px) and (max-width: 1024px) {
+    .bottomBar {
+        padding: 12px;
+        gap: 10px;
+    }
+
+    .icon {
+        width: 26px;
+        height: 22px;
+    }
+
+    .volumeBar {
+        width: 70px;
+    }
+}
