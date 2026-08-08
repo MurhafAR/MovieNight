@@ -30,6 +30,7 @@ COPY --from=builder /app/server.ts ./server.ts
 COPY --from=builder /app/scripts ./scripts
 COPY --from=builder /app/drizzle.config.ts ./drizzle.config.ts
 COPY --from=builder /app/drizzle ./drizzle
+COPY --from=builder /app/src ./src
 
 EXPOSE 3000
 ENV PORT=3000
