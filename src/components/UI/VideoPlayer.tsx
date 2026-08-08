@@ -57,7 +57,7 @@ export default function VideoPlayer({
     (syncProgress: number, time: number, status: boolean) => {
       if (Number.isFinite(syncProgress)) setProgress(syncProgress);
       if (Number.isFinite(time) && playerRef.current) {
-        playerRef.current.seekTo(time, "seconds");
+        playerRef.current.currentTime = time;
         setCurrentTime(time);
       }
       setIsPlaying(status);
@@ -68,8 +68,8 @@ export default function VideoPlayer({
   const emitPlayState = useCallback(
     (status: boolean, time: number) => {
       if (!socket || !playerRef.current) return;
-      const totalDuration = playerRef.current.getDuration() || 1;
-      const progressPercent = (time / totalDuration) * 100;
+      const totalDuration = playerRef.current.duration || 1;
+      const progressPercent = totalDuration > 0 ? (time / totalDuration) * 100 : 0;
       if (!Number.isFinite(progressPercent)) return;
       socket.emit("video-play", {
         roomId,
@@ -86,7 +86,7 @@ export default function VideoPlayer({
     (status: boolean) => {
       if (!canControl) return;
       if (!playerRef.current) return;
-      const currentDuration = playerRef.current.getCurrentTime() || 0;
+      const currentDuration = playerRef.current.currentTime || 0;
       emitPlayState(status, currentDuration);
       setIsPlaying(status);
     },
@@ -96,16 +96,16 @@ export default function VideoPlayer({
   const handleSkip = useCallback(
     (seconds: number) => {
       if (!canControl || !playerRef.current) return;
-      const currentDuration = playerRef.current.getCurrentTime() || 0;
-      const totalDuration = playerRef.current.getDuration() || 1;
+      const currentDuration = playerRef.current.currentTime || 0;
+      const totalDuration = playerRef.current.duration || 1;
       const newTime = Math.max(
         0,
         Math.min(currentDuration + seconds, totalDuration)
       );
-      playerRef.current.seekTo(newTime, "seconds");
+      playerRef.current.currentTime = newTime;
       setCurrentTime(newTime);
-      const progressPercent = (newTime / totalDuration) * 100;
-      if (Number.isFinite(progressPercent)) setProgress(progressPercent);
+      const progressPercent = totalDuration > 0 ? (newTime / totalDuration) * 100 : 0;
+      setProgress(progressPercent);
       emitPlayState(true, newTime);
       setIsPlaying(true);
     },
@@ -151,10 +151,11 @@ export default function VideoPlayer({
     return hrs > 0 ? `${h}:${m}:${s}` : `${m}:${s}`;
   };
 
-  const handleProgress = (state: { played: number; playedSeconds: number }) => {
-    if (!isSeeking && Number.isFinite(state.played)) {
-      setProgress(state.played * 100);
-      setCurrentTime(state.playedSeconds);
+  const handleTimeUpdate = (e: React.SyntheticEvent<HTMLVideoElement>) => {
+    const video = e.currentTarget;
+    if (!isSeeking && video && video.duration > 0) {
+      setProgress((video.currentTime / video.duration) * 100);
+      setCurrentTime(video.currentTime);
     }
   };
 
@@ -165,7 +166,7 @@ export default function VideoPlayer({
     if (!canControl || !playerRef.current) return;
     const timeStamp = parseFloat(e.target.value);
     if (!Number.isFinite(timeStamp)) return;
-    const totalDuration = playerRef.current.getDuration() || 1;
+    const totalDuration = playerRef.current.duration || 1;
     const seekTime = (timeStamp / 100) * totalDuration;
     setProgress(timeStamp);
     setCurrentTime(seekTime);
@@ -176,9 +177,9 @@ export default function VideoPlayer({
       setIsSeeking(false);
       return;
     }
-    const totalDuration = playerRef.current.getDuration() || 1;
+    const totalDuration = playerRef.current.duration || 1;
     const seekTime = (seekProgressRef.current / 100) * totalDuration;
-    playerRef.current.seekTo(seekTime, "seconds");
+    playerRef.current.currentTime = seekTime;
     setCurrentTime(seekTime);
     setIsSeeking(false);
     setIsPlaying(true);
@@ -214,7 +215,7 @@ export default function VideoPlayer({
         height="100%"
         controls={false}
         playing={isPlaying}
-        onProgress={handleProgress as any}
+        onTimeUpdate={handleTimeUpdate as any}
         volume={volumeValue}
         muted={isMuted}
         className={styles.videoPlayer}
@@ -227,7 +228,10 @@ export default function VideoPlayer({
         className={styles.controlsOverlay}
         onClick={() => handlePlay(!isPlaying)}
       >
-        <div className={styles.bottomBar}>
+        <div
+          className={styles.bottomBar}
+          onClick={(e) => e.stopPropagation()}
+        >
           {canControl && (
             <span title={t("player.rewind")}>
               <SkipBack
@@ -341,3 +345,4 @@ export default function VideoPlayer({
     </div>
   );
 }
+
