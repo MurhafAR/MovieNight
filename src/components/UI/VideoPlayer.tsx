@@ -56,7 +56,10 @@ export default function VideoPlayer({
   const handleSync = useCallback(
     (syncProgress: number, time: number, status: boolean) => {
       if (Number.isFinite(syncProgress)) setProgress(syncProgress);
-      if (Number.isFinite(time)) playerRef.current!.currentTime = time;
+      if (Number.isFinite(time) && playerRef.current) {
+        playerRef.current.seekTo(time, "seconds");
+        setCurrentTime(time);
+      }
       setIsPlaying(status);
     },
     []
@@ -65,7 +68,7 @@ export default function VideoPlayer({
   const emitPlayState = useCallback(
     (status: boolean, time: number) => {
       if (!socket || !playerRef.current) return;
-      const totalDuration = playerRef.current.duration || 1;
+      const totalDuration = playerRef.current.getDuration() || 1;
       const progressPercent = (time / totalDuration) * 100;
       if (!Number.isFinite(progressPercent)) return;
       socket.emit("video-play", {
@@ -83,7 +86,7 @@ export default function VideoPlayer({
     (status: boolean) => {
       if (!canControl) return;
       if (!playerRef.current) return;
-      const currentDuration = playerRef.current.currentTime || 0;
+      const currentDuration = playerRef.current.getCurrentTime() || 0;
       emitPlayState(status, currentDuration);
       setIsPlaying(status);
     },
@@ -93,13 +96,13 @@ export default function VideoPlayer({
   const handleSkip = useCallback(
     (seconds: number) => {
       if (!canControl || !playerRef.current) return;
-      const currentDuration = playerRef.current.currentTime || 0;
-      const totalDuration = playerRef.current.duration || 1;
+      const currentDuration = playerRef.current.getCurrentTime() || 0;
+      const totalDuration = playerRef.current.getDuration() || 1;
       const newTime = Math.max(
         0,
         Math.min(currentDuration + seconds, totalDuration)
       );
-      playerRef.current.currentTime = newTime;
+      playerRef.current.seekTo(newTime, "seconds");
       setCurrentTime(newTime);
       const progressPercent = (newTime / totalDuration) * 100;
       if (Number.isFinite(progressPercent)) setProgress(progressPercent);
@@ -155,30 +158,47 @@ export default function VideoPlayer({
     }
   };
 
-  const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const seekProgressRef = useRef(progress);
+  seekProgressRef.current = progress;
+
+  const handleSeekChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!canControl || !playerRef.current) return;
     const timeStamp = parseFloat(e.target.value);
     if (!Number.isFinite(timeStamp)) return;
-    const totalDuration = playerRef.current.duration || 1;
+    const totalDuration = playerRef.current.getDuration() || 1;
     const seekTime = (timeStamp / 100) * totalDuration;
     setProgress(timeStamp);
     setCurrentTime(seekTime);
   };
 
-  const handleSeekEnd = (
-    e: React.MouseEvent<HTMLInputElement> | React.TouchEvent<HTMLInputElement>
-  ) => {
-    if (!canControl || !playerRef.current) return;
-    const timeStamp = parseFloat(e.currentTarget.value);
-    if (!Number.isFinite(timeStamp)) return;
-    const totalDuration = playerRef.current.duration || 1;
-    const seekTime = (timeStamp / 100) * totalDuration;
-    playerRef.current.currentTime = seekTime;
-    setProgress(timeStamp);
+  const commitSeek = useCallback(() => {
+    if (!canControl || !playerRef.current) {
+      setIsSeeking(false);
+      return;
+    }
+    const totalDuration = playerRef.current.getDuration() || 1;
+    const seekTime = (seekProgressRef.current / 100) * totalDuration;
+    playerRef.current.seekTo(seekTime, "seconds");
+    setCurrentTime(seekTime);
     setIsSeeking(false);
-    emitPlayState(true, seekTime);
     setIsPlaying(true);
-  };
+    emitPlayState(true, seekTime);
+  }, [canControl, emitPlayState]);
+
+  useEffect(() => {
+    if (!isSeeking) return;
+
+    const handleWindowPointerUp = () => {
+      commitSeek();
+    };
+
+    window.addEventListener("mouseup", handleWindowPointerUp);
+    window.addEventListener("touchend", handleWindowPointerUp);
+    return () => {
+      window.removeEventListener("mouseup", handleWindowPointerUp);
+      window.removeEventListener("touchend", handleWindowPointerUp);
+    };
+  }, [isSeeking, commitSeek]);
 
   const handleVolume = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseFloat(e.currentTarget.value);
@@ -261,15 +281,19 @@ export default function VideoPlayer({
             className={`${styles.seekBar} ${
               !canControl ? styles.seekBarDisabled : ""
             }`}
-            onChange={handleSeek}
+            onChange={handleSeekChange}
             onMouseDown={(e) => {
               e.stopPropagation();
               if (canControl) {
                 setIsSeeking(true);
-                setIsPlaying(false);
               }
             }}
-            onMouseUp={canControl ? handleSeekEnd : undefined}
+            onTouchStart={(e) => {
+              e.stopPropagation();
+              if (canControl) {
+                setIsSeeking(true);
+              }
+            }}
             disabled={!canControl}
           />
           <span>{formatTime(currentTime)}</span>
