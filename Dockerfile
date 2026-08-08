@@ -27,6 +27,7 @@ COPY --from=builder /app/package.json ./package.json
 COPY --from=builder /app/yarn.lock ./yarn.lock
 COPY --from=builder /app/.yarnrc.yml ./.yarnrc.yml
 COPY --from=builder /app/server.ts ./server.ts
+COPY --from=builder /app/scripts ./scripts
 COPY --from=builder /app/drizzle.config.ts ./drizzle.config.ts
 COPY --from=builder /app/drizzle ./drizzle
 
@@ -34,4 +35,4 @@ EXPOSE 3000
 ENV PORT=3000
 
 # Start the custom server
-CMD ["sh", "-c", "yarn db:migrate && yarn start"]
+CMD ["sh", "-c", "yarn db:reconcile && yarn db:migrate && yarn start"]
