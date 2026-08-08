@@ -35,4 +35,4 @@ EXPOSE 3000
 ENV PORT=3000
 
 # Start the custom server
-CMD ["sh", "-c", "yarn db:reconcile && yarn db:migrate && yarn start"]
+CMD ["sh", "-c", "yarn db:reconcile && timeout 180 yarn db:migrate && yarn start"]

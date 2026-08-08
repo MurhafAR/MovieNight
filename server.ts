@@ -414,8 +414,12 @@ app.prepare().then(() => {
     }, CLEANUP_INTERVAL_MS);
 
     const port = parseInt(process.env.PORT || "3000", 10);
-    httpServer.listen(port, () => {
-        console.log(`MovieNight is running on port ${port}`);
+    httpServer.on("error", (err) => {
+        console.error("HTTP server failed to start:", err);
+        process.exit(1);
+    });
+    httpServer.listen(port, "0.0.0.0", () => {
+        console.log(`MovieNight is running on http://0.0.0.0:${port}`);
     });
 }).catch((err) => {
     console.error("Next.js preparation failed:", err);
