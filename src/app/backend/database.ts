@@ -1,5 +1,5 @@
-import { db } from "@/db";
-import { rooms, users, messages, subtitles } from "@/db/schema";
+import { db } from "../../db";
+import { rooms, users, messages, subtitles } from "../../db/schema";
 import { eq, sql, and, isNotNull } from "drizzle-orm";
 import { asc } from "drizzle-orm/sql/expressions/select";
 import { randomUUID } from "crypto";
